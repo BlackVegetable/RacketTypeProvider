@@ -1,0 +1,6 @@
+<Aquarium size="30" water-quality="clean">
+  <Fish hungry="true">Goldfish</Fish>
+  <Fish hungry="false">Clownfish</Fish>
+  <Fish hungry="true" smelly="false" tasty="true">Tuna</Fish>
+  <Fish hungry="true" tasty="false">Carp</Fish>
+</Aquarium>

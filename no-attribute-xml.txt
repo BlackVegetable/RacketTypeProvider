@@ -1,0 +1,4 @@
+<Aquarium>
+  <Fish hungry="true">Goldfish</Fish>
+  <Fish hungry="false">Clownfish</Fish>
+</Aquarium>

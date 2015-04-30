@@ -1,0 +1,4 @@
+<Aquarium size="30" water-quality="clean">
+  <Fish hungry="true">Goldfish</Fish>
+  <Fish hungry="false">Clownfish</Fish>
+</Aquarium>
