@@ -6,7 +6,7 @@
   racket/class
   racket/gui/base
   racket/list
-  racket/string
+  racket/path
   "./type-tree.rkt"
   (only-in "./type-provider-utils.rkt"
            get-remainder-prefix
@@ -97,13 +97,18 @@
   (just-constructors (xml->constructors ctime-xml (hash))))
      
 ;; Editor-Input-Port -> String-Filepath/eof
-(define (get-macro-filepath d-port)
+(define (get-macro-filepath d-port frame)
   (define current-datum (read d-port))
   (cond [(and (list? current-datum)
               (equal? (first current-datum) 'macro:gen-type-provider))
-         (second current-datum)]
+         (cond 
+           [(absolute-path? (second current-datum)) (second current-datum)]
+           [else
+            (define editing-file-path (send frame get-filename))
+            (define common-root (path-only editing-file-path))
+            (build-path common-root (second current-datum))])]
         [(eof-object? current-datum) current-datum]
-        [else (get-macro-filepath d-port)]))
+        [else (get-macro-filepath d-port frame)]))
 
 ;; File-Path -> XML
 (define (get-xml-from-path p)
@@ -116,7 +121,7 @@
   (define definitions (send (send frame get-tab) get-defs))
   (define d-port (open-input-text-editor definitions))
   (define current-path (begin (read-line d-port) ; Discard #lang xyz.
-                              (get-macro-filepath d-port)))
+                              (get-macro-filepath d-port frame)))
   (cond [(eof-object? current-path) (void)]
         [else
          (cond 
